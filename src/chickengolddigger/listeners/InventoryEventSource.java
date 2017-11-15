@@ -6,12 +6,6 @@ import org.powerbot.script.rt4.Item;
 
 import java.util.EventListener;
 
-/**
- * Created with IntelliJ IDEA
- * User: Phantomist96
- * Date: 08/24/17
- */
-
 public class InventoryEventSource implements EventSource<InventoryEvent> {
 
     private final ClientContext ctx;
@@ -37,14 +31,6 @@ public class InventoryEventSource implements EventSource<InventoryEvent> {
             }
         }
 
-    }
-
-    private Item getInventoryItemNil() {
-        return ((org.powerbot.script.rt4.ClientContext) ctx).inventory.nil();
-    }
-
-    private Item getInventoryItem(int inventoryIndex) {
-        return ((org.powerbot.script.rt4.ClientContext) ctx).inventory.itemAt(inventoryIndex);
     }
 
     @Override
