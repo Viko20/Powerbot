@@ -2,9 +2,9 @@ package chickengolddigger;
 
 import chickengolddigger.listeners.InventoryEvent;
 import chickengolddigger.listeners.InventoryListener;
-import chickengolddigger.models.Bank;
 import chickengolddigger.models.EventDispatcher;
 import chickengolddigger.models.Task;
+import chickengolddigger.tasks.Bank;
 import chickengolddigger.tasks.PickupLoot;
 import chickengolddigger.tasks.WalkToBank;
 import chickengolddigger.tasks.WalkToChickens;

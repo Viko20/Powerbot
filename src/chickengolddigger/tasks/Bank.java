@@ -1,5 +1,6 @@
-package chickengolddigger.models;
+package chickengolddigger.tasks;
 
+import chickengolddigger.models.Task;
 import org.powerbot.script.rt4.ClientContext;
 
 public class Bank extends Task {
