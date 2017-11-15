@@ -30,7 +30,7 @@ public class WalkToChickens extends Task {
     @Override
     public boolean activate() {
         System.out.println("checking WalkToChickens");
-        return ctx.inventory.select().count() == 0 && !CHICKEN_AREA.contains(ctx.players.local());
+        return ctx.inventory.isEmpty() && !CHICKEN_AREA.contains(ctx.players.local());
     }
 
     @Override

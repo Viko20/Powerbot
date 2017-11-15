@@ -1,8 +1,9 @@
 package chickengolddigger;
 
 import chickengolddigger.listeners.InventoryEvent;
+import chickengolddigger.listeners.InventoryEventSource;
 import chickengolddigger.listeners.InventoryListener;
-import chickengolddigger.models.EventDispatcher;
+import chickengolddigger.models.EventSource;
 import chickengolddigger.models.Task;
 import chickengolddigger.tasks.Bank;
 import chickengolddigger.tasks.PickupLoot;
@@ -19,7 +20,7 @@ import java.util.List;
 
 @Script.Manifest(name = "ChickBeAGoldDigger", description = "Picks up chick loot", properties = "author=Viko20; topic=999; client=4;")
 
-public class ChickBeAGoldDigger extends PollingScript<ClientContext> implements PaintListener, InventoryListener {
+public class ChickBeAGoldDigger extends PollingScript<ClientContext> implements PaintListener {
 
     private final RenderingHints antialiasing = new RenderingHints(
             RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -28,8 +29,13 @@ public class ChickBeAGoldDigger extends PollingScript<ClientContext> implements 
     private final BasicStroke stroke1 = new BasicStroke(1);
     private final Font font1 = new Font("Arial", 1, 16);
     private final Font font2 = new Font("Arial", 1, 12);
-    private List<Task> tasks = new ArrayList<Task>();
-    private EventDispatcher eventDispatcher;
+
+    private List<Task> tasks = new ArrayList<>();
+
+    private List<EventSource> eventSources = new ArrayList<EventSource>() {{
+        add(new InventoryEventSource(ctx));
+    }};
+
     private int totalValue = 0;
 
     public static String getRunTime(long time) {
@@ -42,10 +48,14 @@ public class ChickBeAGoldDigger extends PollingScript<ClientContext> implements 
     @Override
     public void start() {
         System.out.println("The bot has started!");
-
         ctx.camera.pitch(90);
-        eventDispatcher = new EventDispatcher(ctx);
-        eventDispatcher.addListener(this);
+
+        ctx.dispatcher.add(new InventoryListener() {
+            @Override
+            public void onInventoryChange(InventoryEvent inventoryEvent) {
+                totalValue += inventoryEvent.getValueChange();
+            }
+        });
 
         if (tasks.isEmpty()) {
             tasks.add(new WalkToBank(ctx));
@@ -59,6 +69,9 @@ public class ChickBeAGoldDigger extends PollingScript<ClientContext> implements 
 
     @Override
     public void poll() {
+
+        for (EventSource r : eventSources)
+            r.process(ctx);
 
         for (Task t : tasks) {
             if (t.activate()) {
@@ -88,11 +101,5 @@ public class ChickBeAGoldDigger extends PollingScript<ClientContext> implements 
         g.drawString("Gp / Hour: " + totalValue / (getTotalRuntime() / 1000) * 60 * 60, 21, 383);
         g.drawString("Runtime: " + getRunTime(getTotalRuntime()), 22, 416);
         g.drawString("Total Gp: " + totalValue, 21, 399);
-    }
-
-    @Override
-    public void onInventoryChange(InventoryEvent inventoryEvent) {
-
-        totalValue += inventoryEvent.getValueChange();
     }
 }

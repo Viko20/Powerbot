@@ -1,7 +1,6 @@
 package chickengolddigger.listeners;
 
 import org.powerbot.script.rt4.GeItem;
-import org.powerbot.script.rt4.Item;
 
 import java.util.EventObject;
 
@@ -12,20 +11,23 @@ import java.util.EventObject;
  */
 public class InventoryEvent extends EventObject {
 
-    private final int inventorySlot;
-    private final Item newItem;
-    private int totalVal = 0;
+    private final int id;
+    private final int diff;
+    private final int slot;
 
-    public InventoryEvent(int inventorySlot, Item newItem) {
-        super(inventorySlot);
-        this.inventorySlot = inventorySlot;
-        this.newItem = newItem;
+    public InventoryEvent(int slot, int id, int diff) {
+        super(id);
+        this.id = id;
+        this.diff = diff;
+        this.slot = slot;
     }
 
     public int getValueChange() {
-        GeItem newItem = new GeItem(this.newItem.id());
-        totalVal += newItem.price;
-        return totalVal;
+        GeItem newItem = new GeItem(id);
+        if (diff > 0)
+            return newItem.price * diff;
+        else
+            return newItem.price;
     }
 
 }
