@@ -30,7 +30,7 @@ public class WalkToBank extends Task {
     @Override
     public boolean activate() {
         System.out.println("checking WalkToBank");
-        return ctx.inventory.select().count() == 28 && !BANK_AREA.contains(ctx.players.local());
+        return ctx.inventory.select().count() == 28 && (!BANK_AREA.contains(ctx.players.local()) || !ctx.bank.inViewport());
     }
 
     @Override

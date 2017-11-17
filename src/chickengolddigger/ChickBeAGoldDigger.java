@@ -1,6 +1,5 @@
 package chickengolddigger;
 
-import chickengolddigger.listeners.InventoryEvent;
 import chickengolddigger.listeners.InventoryEventSource;
 import chickengolddigger.listeners.InventoryListener;
 import chickengolddigger.models.EventSource;
@@ -11,6 +10,7 @@ import chickengolddigger.tasks.WalkToBank;
 import chickengolddigger.tasks.WalkToChickens;
 import org.powerbot.script.PaintListener;
 import org.powerbot.script.PollingScript;
+import org.powerbot.script.Random;
 import org.powerbot.script.Script;
 import org.powerbot.script.rt4.ClientContext;
 
@@ -48,14 +48,9 @@ public class ChickBeAGoldDigger extends PollingScript<ClientContext> implements 
     @Override
     public void start() {
         System.out.println("The bot has started!");
-        ctx.camera.pitch(90);
+        ctx.camera.pitch(new Random().nextInt(90, 180));
 
-        ctx.dispatcher.add(new InventoryListener() {
-            @Override
-            public void onInventoryChange(InventoryEvent inventoryEvent) {
-                totalValue += inventoryEvent.getValueChange();
-            }
-        });
+        ctx.dispatcher.add((InventoryListener) inventoryEvent -> totalValue += inventoryEvent.getValueChange());
 
         if (tasks.isEmpty()) {
             tasks.add(new WalkToBank(ctx));
