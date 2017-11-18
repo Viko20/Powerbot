@@ -7,6 +7,9 @@ import org.powerbot.script.Script;
 import org.powerbot.script.rt4.ClientContext;
 import tutorialbuster.models.Task;
 import tutorialbuster.tasks.CreateCharacter;
+import tutorialbuster.tasks.HandleGuide;
+import tutorialbuster.tasks.HandleSurvivalExpert;
+import tutorialbuster.tasks.WalkToFishes;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -33,6 +36,9 @@ public class TutorialBuster extends PollingScript<ClientContext> implements Pain
 
         if (tasks.isEmpty()) {
             tasks.add(new CreateCharacter(ctx));
+            tasks.add(new HandleGuide(ctx));
+            tasks.add(new WalkToFishes(ctx));
+            tasks.add(new HandleSurvivalExpert(ctx));
             System.out.println("Tasks added!");
         }
     }
